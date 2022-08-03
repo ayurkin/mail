@@ -2,10 +2,10 @@ package application
 
 import (
 	"context"
-	"fmt"
-	"go.uber.org/zap"
-	"mail/internal/adapters/kafka"
+	consumer "mail/internal/adapters/kafka"
 	"mail/internal/config"
+
+	"go.uber.org/zap"
 )
 
 var (
@@ -21,18 +21,9 @@ func Start(ctx context.Context) {
 		logger.Sugar().Fatalf("create config failed: %v", err)
 	}
 
-	fmt.Println(
-		appConfig.KafkaHost,
-		appConfig.KafkaPort,
-		appConfig.KafkaTopic,
-		appConfig.EventsToProcessChannelBufferSize,
-		appConfig.ProcessedEventsChannelBufferSize,
-	)
-
-	mailHandler = consumer.New(*appConfig, logger.Sugar())
+	mailHandler = consumer.New(appConfig, logger.Sugar())
 
 	mailHandler.Start(ctx)
-
 }
 
 func Stop() {

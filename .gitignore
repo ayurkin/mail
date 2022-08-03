@@ -1,1 +1,3 @@
 .idea
+.golangci.yml
+gl-code-quality-report.json

@@ -16,9 +16,11 @@ type Config struct {
 
 func NewConfig() (*Config, error) {
 	var s Config
+
 	err := envconfig.Process("", &s)
 	if err != nil {
 		return nil, err
 	}
+
 	return &s, nil
 }
