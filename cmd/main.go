@@ -12,7 +12,9 @@ func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGTERM, os.Interrupt)
 	defer cancel()
 
-	go application.Start(ctx)
+	app := application.App{}
+
+	go application.Start(ctx, &app)
 	<-ctx.Done()
-	application.Stop()
+	application.Stop(&app)
 }

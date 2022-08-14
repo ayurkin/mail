@@ -8,25 +8,26 @@ import (
 	"go.uber.org/zap"
 )
 
-var (
+type App struct {
 	logger      *zap.Logger
 	mailHandler *consumer.Client
-)
+}
 
-func Start(ctx context.Context) {
-	logger, _ = zap.NewProduction()
+func Start(ctx context.Context, app *App) {
+	logger, _ := zap.NewProduction()
 
+	app.logger = logger
 	appConfig, err := config.NewConfig()
 	if err != nil {
 		logger.Sugar().Fatalf("create config failed: %v", err)
 	}
 
-	mailHandler = consumer.New(appConfig, logger.Sugar())
+	app.mailHandler = consumer.New(appConfig, logger.Sugar())
 
-	mailHandler.Start(ctx)
+	app.mailHandler.Start(ctx)
 }
 
-func Stop() {
-	mailHandler.Stop()
-	logger.Sugar().Info("app has stopped")
+func Stop(app *App) {
+	app.mailHandler.Stop()
+	app.logger.Sugar().Info("app has stopped")
 }

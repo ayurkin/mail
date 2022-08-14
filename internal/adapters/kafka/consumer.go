@@ -76,7 +76,7 @@ func (c *Client) Start(ctx context.Context) {
 					return
 				}
 
-				c.logger.Infof("kafka reader failed: %v", err)
+				c.logger.Errorf("kafka reader failed: %v", err)
 
 				continue
 			}
